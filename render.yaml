@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: riot-md
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: NODE_ENV
+        value: production
+    healthCheckPath: /api/status
+    autoDeploy: true
+    disk:
+      name: sessions
+      mountPath: /app/sessions
+      sizeGB: 5

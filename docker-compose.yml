@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  riot-md:
+    build: .
+    container_name: riot-md
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    env_file:
+      - .env
+    volumes:
+      - ./sessions:/app/sessions
+      - ./database:/app/database
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Optional: MongoDB
+  # mongo:
+  #   image: mongo:7
+  #   container_name: riot-mongo
+  #   restart: unless-stopped
+  #   volumes:
+  #     - mongo_data:/data/db
+  #   environment:
+  #     MONGO_INITDB_DATABASE: riotmd
+
+# volumes:
+#   mongo_data:
